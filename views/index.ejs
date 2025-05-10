@@ -1,0 +1,7 @@
+<h2>Welcome to My Blog</h2>
+<p>This is the home page of our blog applicaton.</p>
+<% if (user) { %>
+ <p>Welcome back, <%= user.username %>!</p>
+<% }  else { %>
+    <p>please login or register to create blog posts.</p>
+    <% } %>
