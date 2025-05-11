@@ -1,0 +1,47 @@
+<main>
+    <h2>Welcome to Your Dashboard, <%= user.username %>!</h2>
+    
+    <div class="dashboard-content">
+      <section class="user-info">
+        <h3>Your Profile</h3>
+        <p><strong>Email:</strong> <%= user.email %></p>
+        <p><strong>Member since:</strong> <%= user.createdAt.toDateString() %></p>
+      </section>
+  
+      <section class="actions">
+        <h3>Quick Actions</h3>
+        <a href="/posts/new" class="btn">Create New Post</a>
+        
+      </section>
+    </div>
+  </main>
+  
+  <style>
+    .dashboard-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+  
+    .user-info, .actions {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+  
+    .btn {
+      display: inline-block;
+      background: #4d4c4c;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      text-decoration: none;
+      margin-right: 1rem;
+    }
+  
+    .btn:hover {
+      background: #1f1f1f;
+    }
+  </style>

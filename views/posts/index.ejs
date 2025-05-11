@@ -1,0 +1,29 @@
+<h2>All Blog Posts</h2>
+
+<% if (posts.length > 0) { %>
+  <div class="posts-list">
+    <% posts.forEach(post => { %>
+      <article class="post">
+        <h3><a href="/posts/<%= post._id %>"><%= post.title %></a></h3>
+        <p class="author">By <%= post.author.username %></p>
+        <div class="content"><%= post.content %></div>
+
+        <% if (typeof user !== 'undefined' && user && post.author._id.toString() === user._id.toString()) { %>
+          <div class="post-actions">
+            <a href="/posts/<%= post._id %>/edit" class="btn">Edit</a>
+            <form action="/posts/<%= post._id %>?_method=DELETE" method="POST" style="display:inline;">
+              <button 
+  onclick="deletePost('<%= post._id %>', this)" 
+  class="btn btn-danger"
+>
+  Delete
+</button>
+            </form>
+          </div>
+        <% } %>
+      </article>
+    <% }) %>
+  </div>
+<% } else { %>
+  <p>No posts yet. Be the first to post!</p>
+<% } %>

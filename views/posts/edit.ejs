@@ -1,0 +1,60 @@
+<h2>Edit Post</h2>
+
+<form id="editPostForm">
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input 
+      type="text" 
+      id="title" 
+      name="title" 
+      value="<%= post.title %>"
+      required
+    >
+  </div>
+  
+  <div class="form-group">
+    <label for="content">Content</label>
+    <textarea 
+      id="content" 
+      name="content" 
+      rows="10" 
+      required
+    ><%= post.content %></textarea>
+  </div>
+  
+  <div class="form-actions">
+    <button type="submit" class="btn">Update Post</button>
+    <a href="/posts/<%= post._id %>" class="btn btn-cancel">Cancel</a>
+  </div>
+</form>
+
+<script>
+  document.getElementById('editPostForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = {
+      title: document.getElementById('title').value,
+      content: document.getElementById('content').value
+    };
+    
+    try {
+      const response = await fetch(`/posts/<%= post._id %>`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+      
+      if (response.ok) {
+        window.location.href = `/posts/<%= post._id %>`;
+      } else {
+        const data = await response.json();
+        alert(data.message || 'Error updating post');
+      }
+    } catch (err) {
+      console.error('Error:', err);
+      alert('Error updating post');
+    }
+  });
+</script>

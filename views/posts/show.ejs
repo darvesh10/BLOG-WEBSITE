@@ -1,0 +1,75 @@
+<article class="post" id="post-<%= post._id %>">
+  <h2><%= post.title %></h2>
+  <p><%= post.content %></p>
+
+  <% if (typeof user !== 'undefined' && user && post.isAuthor(user._id)) { %>
+    <div class="post-actions">
+      <a href="/posts/<%= post._id %>/edit" class="btn">Edit</a>
+      <button 
+      onclick="deletePost('<%= post._id %>', this)" 
+      class="btn btn-danger"
+    >
+      Delete
+    </button>
+    </div>
+  <% } %>
+</article>
+
+<script>
+  async function deletePost(postId, button) {
+    if (!confirm('Delete this post permanently?')) return;
+    
+    const postElement = button.closest('.post');
+    if (!postElement) return;
+    
+    // Visual feedback
+    button.disabled = true;
+    button.innerHTML = '<span class="spinner"></span> Deleting...';
+    postElement.style.opacity = '0.5';
+    
+    try {
+      const response = await fetch(`/posts/${postId}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      if (response.ok) {
+        // Smooth removal
+        postElement.style.transition = 'all 0.3s';
+        postElement.style.maxHeight = '0';
+        postElement.style.padding = '0';
+        postElement.style.margin = '0';
+        postElement.style.overflow = 'hidden';
+        
+        setTimeout(() => postElement.remove(), 300);
+      }
+    } catch (err) {
+      console.error('Delete failed:', err);
+      button.disabled = false;
+      button.textContent = 'Delete';
+      postElement.style.opacity = '1';
+    }
+  }
+  </script>
+  
+  <style>
+  .post {
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  
+  .spinner {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 5px;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  </style>
